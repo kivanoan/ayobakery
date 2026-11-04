@@ -15,6 +15,6 @@ Run `python3 -m http.server 8000 --directory dist` and open http://localhost:800
 
 ## Editing and publishing
 
-Claude Code or another coding tool can edit this repository. This repository is a source copy; commits here do not automatically update the existing ChatGPT Sites deployment. Publish updated files through the hosting provider when ready.
+Every push to `main` publishes `dist/` to GitHub Pages (see `.github/workflows/pages.yml`), served at https://ayobakery.store.
 
 Imported from website source commit `a334fdf55b7fd4b5079952deba2519a5debd3fb0` (Sites version 18).
