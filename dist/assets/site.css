@@ -83,3 +83,4 @@ h1,h2,.product h3,.editorial-card h3,.flavour-list b{font-family:var(--font-disp
 
 .editorial-card video{display:block;width:100%;height:clamp(330px,38vw,490px);object-fit:cover;background:#2b211d}
 @media(max-width:800px){.editorial-card video{height:clamp(300px,100vw,420px)}}
+.hero-visual video{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;background:#2b211d}.hero-visual video[hidden]{display:none}
