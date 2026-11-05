@@ -140,3 +140,4 @@ dialog h2,#productDialog h2{font:400 30px/1.15 'Didot','Bodoni 72',Georgia,serif
 @media(min-width:801px){.header-nav{background:transparent!important;box-shadow:none!important}}
 .hero-copy .eyebrow{color:#fff!important;opacity:.9}
 .flavours .editorial-card{border-color:rgba(255,255,255,.35)!important}
+.fixed-filling{text-align:center;margin:4px 0 14px;font-size:14px;color:var(--ink)}.fixed-filling a{text-decoration:underline;color:var(--green)}#fillingNote{display:block;margin-top:6px}

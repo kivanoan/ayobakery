@@ -36,7 +36,9 @@ function render(filter='top') {
 const FILLING_ALLERGENS={'Pistachio Raspberry':'Milk, Eggs, Gluten, Pistachio','Vanilla Berries':'Milk, Eggs, Gluten','Black Forest':'Milk, Eggs, Gluten, Gelatine (fish)','Peanut Caramel':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Nutella':'Milk, Eggs, Gluten, Hazelnuts, Soy','Honey Cake':'Milk, Eggs, Gluten','Banana Caramel':'Milk, Eggs, Gluten, Gelatine (fish)','Napoleon':'Milk, Eggs, Gluten'};
 const ITEM_ALLERGENS={'Pistachio Raspberry Cookie':'Milk, Eggs, Gluten, Pistachio','Peanut Caramel Cookie':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Choco Hazelnut Cookie':'Milk, Eggs, Gluten, Hazelnuts, Soy'};
 const KITCHEN_NOTE='Made in a kitchen that handles milk, eggs, gluten, nuts, peanuts and soy.';
-function showAllergens(){const c=cakes[chosen];let a=c.type==='cake'?FILLING_ALLERGENS[$('#filling').value]:ITEM_ALLERGENS[c.name];$('#allergenText').innerHTML=(a?'<b>Allergens:</b> '+a+'. ':'<b>Allergens:</b> please ask us about this dessert. ')+KITCHEN_NOTE;}
+function showAllergens(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#allergenText').innerHTML='<b>Allergens:</b> choose a filling to see its allergens. '+KITCHEN_NOTE;return;}let a=c.type==='cake'?FILLING_ALLERGENS[fillingOf(c)]:ITEM_ALLERGENS[c.name];$('#allergenText').innerHTML=(a?'<b>Allergens:</b> '+a+'. ':'<b>Allergens:</b> please ask us about this dessert. ')+KITCHEN_NOTE;}
+const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry Napoleon':'Napoleon','Pistachio Raspberry Cake':'Pistachio Raspberry','Black Forest':'Black Forest','Nutella Cake':'Nutella'};
+function fillingOf(c){return FIXED_FILLING[c.name]||$('#filling').value;}
 const LEAD_DAYS=2;
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function minOrderDate(){const d=new Date();d.setDate(d.getDate()+LEAD_DAYS);return isoDate(d);}
@@ -44,13 +46,14 @@ function prettyDate(v){if(!v)return '';const [y,m,d]=v.split('-').map(Number);re
 function openCake(i){
   chosen=i;const c=cakes[i],whole=c.type==='cake'||c.type==='cheesecake';
   $('#detailTitle').textContent=c.name;$('#detailDesc').textContent=c.desc;$('#detailImg').src='assets/'+c.img;$('#detailImg').alt=c.name;
-  $('#fillingRow').hidden=c.type!=='cake';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
+  const fixed=FIXED_FILLING[c.name];$('#fillingRow').hidden=c.type!=='cake'||!!fixed;$('#fixedFilling').hidden=!fixed;$('#fixedFilling').innerHTML=fixed?'<b>Filling:</b> '+fixed+' · <a href="fillings.html" target="_blank">what’s inside ↗</a>':'';$('#filling').value='';$('#fillingNote').textContent='';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
   $('#qty').value='4';$('#message').value='';$('#allergy').value='';
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
   showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?$('#filling').value:'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
 function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
+function needFilling(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#fillingNote').textContent='Please choose a filling.';$('#filling').focus();return false;}return true;}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
 render();
 const customCakes=[
@@ -70,8 +73,8 @@ document.querySelectorAll('[data-scroll]').forEach(b=>b.onclick=()=>{const targe
 document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d&&e.offsetX<0)d.close();}));
 $('#filling').onchange=showAllergens;
-$('#add').onclick=()=>{if(!needDate())return;bag.push(currentItem());update();$('#productDialog').close();$('#toast').textContent='Added to your bag';$('#toast').style.display='block';setTimeout(()=>$('#toast').style.display='none',2500);};
-$('#orderNow').onclick=()=>{if(!needDate())return;window.open('https://wa.me/19423816621?text='+encodeURIComponent('Hello AYO Pâtisserie, I would like to order:\n'+itemText(currentItem())),'_blank','noopener');};
+$('#add').onclick=()=>{if(!needFilling()||!needDate())return;bag.push(currentItem());update();$('#productDialog').close();$('#toast').textContent='Added to your bag';$('#toast').style.display='block';setTimeout(()=>$('#toast').style.display='none',2500);};
+$('#orderNow').onclick=()=>{if(!needFilling()||!needDate())return;window.open('https://wa.me/19423816621?text='+encodeURIComponent('Hello AYO Pâtisserie, I would like to order:\n'+itemText(currentItem())),'_blank','noopener');};
 function showBag(){const root=$('#cartItems');root.replaceChildren();if(!bag.length)root.textContent='Your bag is empty. Find a cake you love in the collection.';bag.forEach((x,i)=>{const row=document.createElement('div');row.className='basket-line';const text=document.createElement('span');text.textContent=itemText(x);const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{bag.splice(i,1);update();showBag();};row.append(text,remove);root.append(row);});$('#checkout').disabled=!bag.length;}
 $('#cart').onclick=()=>{showBag();$('#cartDialog').showModal();};
 $('#checkout').onclick=()=>{$('#cartDialog').close();$('textarea').value=bag.map(itemText).join('\n');const dates=bag.map(x=>x.date).filter(Boolean).sort();if(dates[0])$('#enquiry [name=date]').value=dates[0];location.hash='contact';};
