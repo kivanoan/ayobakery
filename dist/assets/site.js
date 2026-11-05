@@ -1,36 +1,37 @@
 const cakes = [
-  {name:'Chocolate Celebration Cake',img:'ayo-03.jpg',cat:'classic',desc:'Chocolate cake finished by hand with dried florals.'},
-  {name:'Signature Berry Cake',img:'ayo-05.jpg',cat:'berry',desc:'Fresh berries, soft cream, and a celebratory finish.'},
-  {name:'Assorted Cake Bars',img:'ayo-08.jpg',cat:'classic',desc:'A colourful selection of layered cake bars.'},
-  {name:'Strawberry Crumb Cake',img:'ayo-11.jpg',cat:'berry',desc:'Fresh strawberries around a golden crumb centre.'},
-  {name:'Caramel Cream Cake',img:'ayo-12.jpg',cat:'classic',desc:'A close-up of softly piped caramel cream.'},
-  {name:'Golden Crumb Cakes',img:'ayo-14.jpg',cat:'classic',desc:'Individual crumb-topped treats, ready to share.'},
-  {name:'Raspberry Pastry',img:'ayo-16.jpg',cat:'berry',desc:'A close-up of bright raspberry filling.'},
-  {name:'Fig & Blueberry Tart',img:'ayo-18.jpg',cat:'berry',desc:'Fresh figs and blueberries on a delicate pastry base.'},
-  {name:'Berry Dessert Cups',img:'ayo-19.jpg',cat:'romantic',desc:'Individual portions topped with fruit and cream.'},
-  {name:'Vanilla Berry Cake',img:'ayo-20.jpg',cat:'berry',desc:'A light vanilla cake topped with fresh berries.'},
-  {name:'Berry Cream Cake',img:'ayo-21.jpg',cat:'berry',desc:'Soft cream layers with berries and figs.'},
-  {name:'Fig & Blueberry Pastry',img:'ayo-22.jpg',cat:'berry',desc:'Fruit-topped pastry slices with fig and blueberry.'},
-  {name:'Chocolate Berry Cake',img:'ayo-23.jpg',cat:'romantic',desc:'Chocolate cake with berries and a burgundy ribbon.'},
-  {name:'Seasonal Pumpkin Pie',img:'ayo-24.jpg',cat:'classic',desc:'A playful seasonal pie with a crisp golden crust.'},
-  {name:'Fig & Berry Tart',img:'ayo-25.jpg',cat:'berry',desc:'A sharing tart topped with figs and fresh berries.'},
-  {name:'San Sebastián Cheesecake',img:'photo-2638.jpg',cat:'classic',desc:'A rich Basque-style cheesecake with a deeply caramelized top.'},
-  {name:'Cherry Cheesecake',img:'photo-2639.jpg',cat:'berry',desc:'Creamy cheesecake topped with glossy cherries.'},
-  {name:'New York Cheesecake',img:'photo-2640.jpg',cat:'classic',desc:'Classic baked cheesecake on a golden crumb base.'},
-  {name:'Nutella Cake',img:'photo-2641.jpg',cat:'classic',desc:'Chocolate layers with a smooth hazelnut cocoa filling.'},
-  {name:'Pistachio Raspberry Cake',img:'photo-2643.jpg',cat:'berry',desc:'Pistachio sponge layered with cream and raspberry.'},
-  {name:'Black Forest',img:'photo-2647.jpg',cat:'classic',desc:'Chocolate, cream, and cherry in a timeless combination.'},
-  {name:'Honey Cake',img:'photo-2648.jpg',cat:'classic',desc:'Tender honey layers with a delicate cream filling.'},
-  {name:'Napoleon',img:'photo-2649.jpg',cat:'classic',desc:'Crisp pastry layers with smooth vanilla cream.'},
-  {name:'Pistachio Raspberry Cookie',img:'photo-2646.jpg',cat:'berry',desc:'Pistachio cookie with raspberry and pistachio cream.'},
-  {name:'Peanut Caramel Cookie',img:'photo-2650.jpg',cat:'classic',desc:'A generous cookie topped with peanut and caramel.'},
-  {name:'Choco Hazelnut Cookie',img:'photo-2651.jpg',cat:'classic',desc:'Chocolate cookie with hazelnut and chocolate.'}
+  {name:'Signature Berry Cake',img:'ayo-05.jpg',cat:'signature',top:1,desc:'Fresh berries, soft cream, and a celebratory finish.'},
+  {name:'Chocolate Berry Cake',img:'ayo-23.jpg',cat:'signature',top:4,desc:'Chocolate cake with berries and a burgundy ribbon.'},
+  {name:'Vanilla Berry Cake',img:'ayo-20.jpg',cat:'signature',top:0,desc:'A light vanilla cake topped with fresh berries.'},
+  {name:'Berry Cream Cake',img:'ayo-21.jpg',cat:'signature',top:0,desc:'Soft cream layers with berries and figs.'},
+  {name:'Chocolate Celebration Cake',img:'ayo-03.jpg',cat:'signature',top:0,desc:'Chocolate cake finished by hand with dried florals.'},
+  {name:'Caramel Cream Cake',img:'ayo-12.jpg',cat:'signature',top:0,desc:'A close-up of softly piped caramel cream.'},
+  {name:'Strawberry Crumb Cake',img:'ayo-11.jpg',cat:'signature',top:7,desc:'Fresh strawberries around a golden crumb centre.'},
+  {name:'Honey Cake',img:'photo-2648.jpg',cat:'classic',top:5,desc:'Tender honey layers with a delicate cream filling.'},
+  {name:'Napoleon',img:'photo-2649.jpg',cat:'classic',top:6,desc:'Crisp pastry layers with smooth vanilla cream.'},
+  {name:'Pistachio Raspberry Cake',img:'photo-2643.jpg',cat:'classic',top:2,desc:'Pistachio sponge layered with cream and raspberry.'},
+  {name:'Black Forest',img:'photo-2647.jpg',cat:'classic',top:8,desc:'Chocolate, cream, and cherry in a timeless combination.'},
+  {name:'Nutella Cake',img:'photo-2641.jpg',cat:'classic',top:0,desc:'Chocolate layers with a smooth hazelnut cocoa filling.'},
+  {name:'San Sebastián Cheesecake',img:'photo-2638.jpg',cat:'cheesecake',top:3,desc:'A rich Basque-style cheesecake with a deeply caramelized top.'},
+  {name:'New York Cheesecake',img:'photo-2640.jpg',cat:'cheesecake',top:0,desc:'Classic baked cheesecake on a golden crumb base.'},
+  {name:'Cherry Cheesecake',img:'photo-2639.jpg',cat:'cheesecake',top:0,desc:'Creamy cheesecake topped with glossy cherries.'},
+  {name:'Berry Dessert Cups',img:'ayo-19.jpg',cat:'desserts',top:0,desc:'Individual portions topped with fruit and cream.'},
+  {name:'Assorted Cake Bars',img:'ayo-08.jpg',cat:'desserts',top:0,desc:'A colourful selection of layered cake bars.'},
+  {name:'Golden Crumb Cakes',img:'ayo-14.jpg',cat:'desserts',top:0,desc:'Individual crumb-topped treats, ready to share.'},
+  {name:'Raspberry Pastry',img:'ayo-16.jpg',cat:'desserts',top:0,desc:'A close-up of bright raspberry filling.'},
+  {name:'Pistachio Raspberry Cookie',img:'photo-2646.jpg',cat:'desserts',top:0,desc:'Pistachio cookie with raspberry and pistachio cream.'},
+  {name:'Choco Hazelnut Cookie',img:'photo-2651.jpg',cat:'desserts',top:0,desc:'Chocolate cookie with hazelnut and chocolate.'},
+  {name:'Peanut Caramel Cookie',img:'photo-2650.jpg',cat:'desserts',top:0,desc:'A generous cookie topped with peanut and caramel.'},
+  {name:'Fig & Berry Tart',img:'ayo-25.jpg',cat:'tarts',top:0,desc:'A sharing tart topped with figs and fresh berries.'},
+  {name:'Fig & Blueberry Tart',img:'ayo-18.jpg',cat:'tarts',top:0,desc:'Fresh figs and blueberries on a delicate pastry base.'},
+  {name:'Fig & Blueberry Pastry',img:'ayo-22.jpg',cat:'tarts',top:0,desc:'Fruit-topped pastry slices with fig and blueberry.'},
+  {name:'Seasonal Pumpkin Pie',img:'ayo-24.jpg',cat:'tarts',top:0,desc:'A playful seasonal pie with a crisp golden crust.'}
 ];
 let chosen=0, bag=[];
 try { bag=JSON.parse(localStorage.getItem('emeraldBag')||'[]'); if(!Array.isArray(bag)) bag=[]; } catch { bag=[]; }
 const $=s=>document.querySelector(s);
-function render(filter='all') {
-  $('#products').innerHTML=cakes.map((c,i)=>filter==='all'||c.cat===filter?`<button class="product" data-cake="${i}"><div class="photo"><img src="assets/${c.img}" alt="${c.name}" loading="lazy"><span class="plus" aria-hidden="true">+</span></div><h3>${c.name}</h3><p>${c.desc}</p></button>`:'').join('');
+function render(filter='top') {
+  const list=cakes.map((c,i)=>[c,i]).filter(([c])=>filter==='all'||(filter==='top'?c.top:c.cat===filter));if(filter==='top')list.sort((a,b)=>a[0].top-b[0].top);
+  $('#products').innerHTML=list.map(([c,i])=>true?`<button class="product" data-cake="${i}"><div class="photo"><img src="assets/${c.img}" alt="${c.name}" loading="lazy"><span class="plus" aria-hidden="true">+</span></div><h3>${c.name}</h3><p>${c.desc}</p></button>`:'').join('');
   document.querySelectorAll('[data-cake]').forEach(b=>b.onclick=()=>{chosen=+b.dataset.cake;$('#detailTitle').textContent=cakes[chosen].name;$('#detailImg').src='assets/'+cakes[chosen].img;$('#detailImg').alt=cakes[chosen].name;$('#productDialog').showModal();});
 }
 render();
