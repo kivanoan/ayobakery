@@ -26,7 +26,7 @@ const cakes = [
 let chosen=0, bag=[];
 try { bag=JSON.parse(localStorage.getItem('emeraldBag')||'[]'); if(!Array.isArray(bag)) bag=[]; } catch { bag=[]; }
 const $=s=>document.querySelector(s);
-const leadNotes={top:'Order at least 2 days ahead · Pickup or delivery in Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',all:'Order at least 2 days ahead · Pickup or delivery in Toronto'};
+const leadNotes={top:'Order at least 2 days ahead · Delivery across Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',all:'Order at least 2 days ahead · Delivery across Toronto'};
 function render(filter='top') {
   const list=cakes.map((c,i)=>[c,i]).filter(([c])=>filter==='all'||(filter==='top'?c.top:c.cat===filter));if(filter==='top')list.sort((a,b)=>a[0].top-b[0].top);
   $('#products').innerHTML=list.map(([c,i])=>`<button class="product" data-cake="${i}"><div class="photo"><img src="assets/${c.img}" alt="${c.name}" loading="lazy"><span class="plus" aria-hidden="true">+</span></div><h3>${c.name}</h3><p>${c.desc}</p></button>`).join('');
@@ -49,8 +49,8 @@ function openCake(i){
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
   showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?$('#filling').value:'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value,method:$('#method').value};}
-function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('date: '+prettyDate(x.date)),x.method].filter(Boolean).join(' · ');}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?$('#filling').value:'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
+function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
 render();
 const customCakes=[
@@ -74,11 +74,11 @@ $('#add').onclick=()=>{if(!needDate())return;bag.push(currentItem());update();$(
 $('#orderNow').onclick=()=>{if(!needDate())return;window.open('https://wa.me/19423816621?text='+encodeURIComponent('Hello AYO Pâtisserie, I would like to order:\n'+itemText(currentItem())),'_blank','noopener');};
 function showBag(){const root=$('#cartItems');root.replaceChildren();if(!bag.length)root.textContent='Your bag is empty. Find a cake you love in the collection.';bag.forEach((x,i)=>{const row=document.createElement('div');row.className='basket-line';const text=document.createElement('span');text.textContent=itemText(x);const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{bag.splice(i,1);update();showBag();};row.append(text,remove);root.append(row);});$('#checkout').disabled=!bag.length;}
 $('#cart').onclick=()=>{showBag();$('#cartDialog').showModal();};
-$('#checkout').onclick=()=>{$('#cartDialog').close();$('textarea').value=bag.map(itemText).join('\n');const dates=bag.map(x=>x.date).filter(Boolean).sort();if(dates[0])$('#enquiry [name=date]').value=dates[0];if(bag.some(x=>x.method==='Delivery')){methodSel.value='Delivery';methodSel.onchange();}location.hash='contact';};
+$('#checkout').onclick=()=>{$('#cartDialog').close();$('textarea').value=bag.map(itemText).join('\n');const dates=bag.map(x=>x.date).filter(Boolean).sort();if(dates[0])$('#enquiry [name=date]').value=dates[0];location.hash='contact';};
 
 $('#enquiry [name=date]').min=minOrderDate();
-$('#enquiry').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);const message=['Hello AYO Pâtisserie, I would like to order.','Name: '+f.get('name'),'Phone: '+f.get('phone'),'Date: '+prettyDate(f.get('date')),'Pickup or delivery: '+f.get('method')+(f.get('address')?' — '+f.get('address'):''),'Occasion: '+f.get('occasion'),'Allergies: '+(f.get('allergy')||'none'),'Order: '+f.get('details')].join('\n');window.location.href='https://wa.me/19423816621?text='+encodeURIComponent(message);};
-const methodSel=document.querySelector('#enquiry [name=method]'),addr=document.querySelector('#enquiry [name=address]');methodSel.onchange=()=>{addr.hidden=methodSel.value!=='Delivery';addr.required=!addr.hidden;};
+$('#enquiry').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);const message=['Hello AYO Pâtisserie, I would like to order.','Name: '+f.get('name'),'Phone: '+f.get('phone'),'Delivery date: '+prettyDate(f.get('date')),'Delivery address: '+f.get('address'),'Occasion: '+f.get('occasion'),'Allergies: '+(f.get('allergy')||'none'),'Order: '+f.get('details')].join('\n');window.location.href='https://wa.me/19423816621?text='+encodeURIComponent(message);};
+
 const menuToggle=$('#menuToggle'),mainNav=$('#mainNav');
 menuToggle.onclick=()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');menuToggle.textContent=open?'×':'☰';mainNav.classList.toggle('open',open);};
 mainNav.querySelectorAll('a').forEach(a=>a.onclick=()=>{menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation');menuToggle.textContent='☰';mainNav.classList.remove('open');});
