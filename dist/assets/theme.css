@@ -91,3 +91,52 @@ dialog img{display:block;width:100%!important;max-height:300px!important;object-
 footer .brandmark{width:84px!important;height:84px!important}
 .flavours .eyebrow,.flavours .flavour-proof{color:rgba(255,255,255,.82)!important}
 .whatsapp-float{border:3px solid #fff!important}
+
+/* D — Cherry & ivory: burgundy brand, ivory base, gold hairlines, serif */
+:root{--green:#6e1a2f;--bg:#fbf8f2;--card:#fbf8f2;--ink:#3a1a20;--muted:#7a6a62;--gold:#b9975b}
+body{background:var(--bg)!important;color:var(--ink)}
+header{background:var(--bg)!important;border-bottom:1px solid var(--gold)!important;box-shadow:none!important}
+header a,header button,.mobile-menu-toggle{color:var(--green)!important}
+.text-logo b{color:var(--green);font:400 40px/1 'Didot','Bodoni 72',Georgia,serif!important;letter-spacing:8px;font-style:normal}
+.text-logo small{color:var(--gold);letter-spacing:6px}
+header .pill.solid{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+.hero-copy{background:linear-gradient(180deg,rgba(110,26,47,0) 40%,rgba(110,26,47,.85) 100%)!important}
+.hero-copy h1{font:400 clamp(36px,8vw,64px)/1.05 'Didot','Bodoni 72',Georgia,serif!important}
+.hero-copy .pill.solid{background:var(--bg)!important;color:var(--green)!important;border-color:var(--bg)!important}
+.section-heading h2,#collection h2,.editorial-section h2,#gallery h2,.contact h2,.story h2{font:400 clamp(30px,6vw,48px)/1.1 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;color:var(--green)!important;letter-spacing:0}
+.eyebrow{color:var(--gold)!important}
+.section,.editorial-section,.marquee{background:var(--bg)!important}
+.products .product{background:transparent!important;box-shadow:none!important;border:1px solid #e6dccb;border-radius:0!important;padding:8px}
+.products .product .photo::after{display:none}
+.products .product h3{font:400 18px/1.25 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;letter-spacing:0;color:var(--green)!important;margin:12px 6px 6px!important}
+.products .product p{font-size:11px!important}
+.filters button{border-radius:0!important;border-color:#e6dccb!important}.filters button.active{background:var(--green)!important;border-color:var(--green)!important}
+.editorial-card{background:transparent!important;box-shadow:none!important;border:1px solid #e6dccb;border-radius:0!important;padding:8px}
+.editorial-card h3{font:400 17px Georgia,serif!important;text-transform:none!important;color:var(--green)!important}
+.flavours{background:var(--green)!important}
+.whatsapp-float{background:var(--green)!important;border:2px solid var(--gold)!important}
+footer{background:var(--green)!important;border-top:3px double var(--gold)!important}
+
+/* D extras: dialog, fillings page, story, contact */
+dialog h2,#productDialog h2{font:400 30px/1.15 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;color:var(--green)!important}
+.fl-intro h1{font:400 clamp(36px,7vw,56px)/1.05 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;color:var(--green)!important}
+.fl-section h2{font:400 clamp(28px,5vw,40px)/1.1 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;color:var(--green)!important}
+.fl-card{background:transparent!important;box-shadow:none!important;border:1px solid #e6dccb!important;border-radius:0!important;padding:8px}
+.fl-photo::after{display:none}
+.fl-body h3{font:400 22px 'Didot','Bodoni 72',Georgia,serif!important;text-transform:none!important;letter-spacing:0;color:var(--green)!important}
+.fl-weight{color:var(--gold)!important}
+.fl-allergens span{border-color:#e6dccb!important}
+.no-photo .fl-body{border-top:2px solid var(--gold)!important}
+.fl-tabs a{border-radius:0;border-color:#e6dccb}.fl-tabs a:hover{background:var(--green)}
+.fl-cta{background:transparent!important;border:1px solid var(--gold)}
+.story h2{text-transform:none!important}
+.allergy-note,.allergen-box{background:#f4ece0!important}
+.allergen-box{border-left-color:var(--gold)!important}
+.brandmark{box-shadow:0 0 0 2px var(--gold)!important}
+.marquee{color:var(--green)!important}
+/* D fixes */
+.header-nav{background:var(--bg)!important}
+.header-nav a{color:var(--green)!important;border-color:#e6dccb!important}
+@media(min-width:801px){.header-nav{background:transparent!important;box-shadow:none!important}}
+.hero-copy .eyebrow{color:#fff!important;opacity:.9}
+.flavours .editorial-card{border-color:rgba(255,255,255,.35)!important}
