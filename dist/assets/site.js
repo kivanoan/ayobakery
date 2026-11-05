@@ -59,35 +59,9 @@ const customCakes=[
 const flavorCards=[['Pistachio Raspberry','photo-2643.jpg'],['Black Forest','photo-2647.jpg'],['Nutella','photo-2641.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Vanilla Berries','ayo-20.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Peanut Caramel Cookie','photo-2650.jpg'],['Choco Hazelnut Cookie','photo-2651.jpg']];
 function renderCarousel(id,items){const root=document.getElementById(id);root.innerHTML=items.map(([name,img,poster])=>`<article class="editorial-card">${img.endsWith('.mp4')?`<video src="assets/${img}" poster="assets/${poster}" autoplay muted loop playsinline preload="metadata" aria-label="${name}"></video>`:`<img src="assets/${img}" alt="${name}" loading="lazy">`}<h3>${name}</h3></article>`).join('');}
 renderCarousel('customCakeTrack',customCakes);renderCarousel('flavorTrack',flavorCards);
-const galleryDescriptions=[
-  'AYO Pâtisserie cake collection announcement with a decorated celebration cake.',
-  'AYO Pâtisserie brand announcement in a soft cream and blush design.',
-  'Chocolate celebration cake decorated with dried flowers.',
-  'Fresh berries arranged on a cake, shown in an AYO Pâtisserie promo graphic.',
-  'Signature cream cake topped with strawberries, raspberries, and blueberries.',
-  'AYO Pâtisserie round logo.',
-  'AYO Pâtisserie logo on a cream background.',
-  'Glazed sponge cake bars on sticks.',
-  'Tall celebration cake with delicate piped decorations, shown in a promo graphic.',
-  'AYO Pâtisserie seasonal announcement with a burgundy ribbon.',
-  'Strawberry Napoleon with a golden crumb finish.',
-  'Close-up of piped caramel cream.',
-  'AYO Pâtisserie illustrated menu card.',
-  'Mini honey cakes in paper cases.',
-  'AYO Pâtisserie reviews illustration.',
-  'Fruit illusion desserts with a creamy berry centre.',
-  'AYO Pâtisserie cake illustration with a ribbon.',
-  'Meringue roll with figs and blueberries.',
-  'Cream dessert cups with blueberries and caramel.',
-  'Vanilla strawberry cake.',
-  'Pavlova with raspberries and figs.',
-  'Meringue rolls with figs and blueberries.',
-  'Red velvet berry cake with a burgundy bow.',
-  'Halloween berry pie with a carved crust.',
-  'Meringue rolls with figs and blueberries.'
-];
+const gallery=[['ayo-05.jpg','Berry charlotte with fresh berries and a satin ribbon.'],['ayo-21.jpg','Pavlova with raspberries and figs.'],['ayo-23.jpg','Red velvet berry cake with a burgundy bow.'],['ayo-16.jpg','Fruit illusion desserts with a creamy berry centre.'],['ayo-18.jpg','Meringue roll with figs and blueberries.'],['ayo-03.jpg','Chocolate celebration cake with dried florals.'],['ayo-20.jpg','Vanilla strawberry cake.'],['ayo-19.jpg','Cream dessert cups with blueberries and caramel.'],['ayo-14.jpg','Mini honey cakes in paper cases.'],['ayo-11.jpg','Strawberry Napoleon with a golden crumb finish.'],['ayo-08.jpg','Glazed sponge cake bars.'],['ayo-25.jpg','Meringue rolls with figs and blueberries.'],['ayo-12.jpg','Close-up of piped caramel cream.'],['ayo-24.jpg','Halloween berry pie with a carved crust.']];
 const photoWall=$('#photoWall');
-for(let i=1;i<=25;i++){const img=document.createElement('img');img.src='assets/ayo-'+String(i).padStart(2,'0')+'.jpg';img.alt=galleryDescriptions[i-1];img.loading='lazy';photoWall.append(img);}
+gallery.forEach(([f,alt])=>{const img=document.createElement('img');img.src='assets/'+f;img.alt=alt;img.loading='lazy';photoWall.append(img);});
 function update(){ $('#count').textContent=bag.length;localStorage.setItem('emeraldBag',JSON.stringify(bag)); }
 update();
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter);$('#products').scrollLeft=0;});
