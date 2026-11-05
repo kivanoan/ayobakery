@@ -1,0 +1,77 @@
+/* Pauline-style theme overrides */
+:root{--green:#722036;--deep:#5a1729;--bg:#f6f2ef;--card:#efe8e5;--ink:#5d5656;--muted:#7b7272;--sans:"Century Gothic","Futura","Avenir Next","Trebuchet MS",Arial,sans-serif}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans)}
+.announcement{display:none}
+/* header: solid burgundy bar */
+header{background:var(--green)!important;color:#fff;border-bottom:0;height:86px;position:sticky;top:0;z-index:8;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+header a,header button{color:#fff}
+.text-logo{display:flex;flex-direction:column;align-items:center;line-height:1;color:#fff;text-decoration:none}
+.text-logo b{font:italic 400 38px/1 Georgia,'Times New Roman',serif;letter-spacing:2px}
+.text-logo small{font:600 8px var(--sans);letter-spacing:4px;margin-top:5px}
+header .pill.solid{background:#fff;color:var(--green);border-color:#fff}
+.mobile-menu-toggle{border:0;color:#fff;font-size:26px;width:44px;height:44px}
+.wa-header{display:none!important}
+.header-nav{background:var(--green)!important;font-family:var(--sans)}
+.header-nav a{color:#fff;border-color:rgba(255,255,255,.18)!important}
+@media(min-width:801px){header nav.header-nav{gap:26px}header nav a{font-weight:600;letter-spacing:1.5px}}
+@media(max-width:800px){header{height:68px}.text-logo b{font-size:30px}}
+/* hero: full image with text over it */
+.hero{position:relative;display:block!important;min-height:min(86vh,720px);overflow:hidden}
+.hero-visual{position:absolute!important;inset:0;height:auto!important}
+.hero-visual .image-label{display:none}
+.hero-copy{position:relative;z-index:2;min-height:min(86vh,720px);justify-content:flex-end!important;padding:40px 6% 46px!important;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(40,10,18,.72) 100%)}
+.hero-copy h1{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.25)}
+.hero-copy p{color:#fff;max-width:420px!important;font-size:15px}
+.hero-copy .eyebrow{color:#fff}
+.hero-copy .pill.solid{background:#fff;color:var(--green);border-color:#fff}
+.slide-controls{color:#fff}.slide-controls button{border-color:rgba(255,255,255,.7)!important;color:#fff}
+.marquee{background:var(--bg);color:var(--green)}
+/* section titles like Pauline: uppercase grey sans */
+.section-heading h2,#collection h2,.editorial-section h2,#gallery h2,.contact h2,.fl-section h2{font:700 clamp(26px,5vw,36px)/1.15 var(--sans)!important;text-transform:uppercase;letter-spacing:.5px;color:var(--ink)}
+.eyebrow{color:var(--muted);font-family:var(--sans)}
+.section,.editorial-section{background:var(--bg)}
+/* store: grid of shadowed cards */
+#collection .carousel-controls{display:none}
+.products{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px!important;overflow:visible!important;padding:0!important}
+.products .product{flex:none!important;min-width:0!important;background:var(--card);border-radius:4px;box-shadow:0 6px 14px rgba(60,30,30,.16);overflow:hidden;text-align:left;display:flex;flex-direction:column}
+.products .product .photo{position:relative;height:auto!important;aspect-ratio:4/5!important;background:var(--card)}
+.products .product .photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(rgba(239,232,229,0),var(--card));pointer-events:none}
+.products .product .plus{z-index:2}
+.products .product h3{font:700 16px/1.25 var(--sans)!important;text-transform:uppercase;letter-spacing:.6px;color:var(--ink);margin:4px 18px 8px!important;min-height:0!important}
+.products .product p{font:400 13px/1.5 var(--sans)!important;color:var(--muted);margin:0 18px 20px!important;max-width:none;min-height:0!important}
+@media(max-width:1000px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.products{gap:14px!important}.products .product h3{font-size:13px!important;margin:2px 12px 6px!important}.products .product p{font-size:12px!important;margin:0 12px 14px!important}}
+.filters button{font-family:var(--sans);font-weight:600;letter-spacing:.3px}
+.filters button.active{background:var(--green);border-color:var(--green)}
+/* custom cakes + gallery cards */
+.editorial-card{background:var(--card);box-shadow:0 6px 14px rgba(60,30,30,.14);border-radius:4px;overflow:hidden}
+.editorial-card h3{font:700 14px/1.3 var(--sans)!important;text-transform:uppercase;letter-spacing:.6px;color:var(--ink)!important;margin:14px 16px 16px!important;min-height:0!important}
+.flavours .editorial-card{background:rgba(255,255,255,.08);box-shadow:none}.flavours .editorial-card h3{color:#fff!important}
+.photo-wall img{border-radius:4px;box-shadow:0 6px 14px rgba(60,30,30,.14)}
+/* round WhatsApp button like Pauline, on all screens */
+.whatsapp-float{display:flex!important;width:62px;height:62px;min-height:0!important;padding:0!important;border-radius:50%!important;background:var(--green)!important;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.25);font-size:0}
+.whatsapp-float svg{width:32px;height:32px}
+/* forms, dialog, footer */
+.contact{background:var(--bg)}
+dialog{background:#fff;font-family:var(--sans)}
+dialog h2{font:700 24px/1.2 var(--sans)!important;text-transform:uppercase;letter-spacing:.5px;color:var(--ink)}
+.pill{font-family:var(--sans);font-weight:600}
+footer{background:var(--green)!important;color:#fff;border-top:0}
+footer a,footer span{color:#fff}
+.footer-bottom{border-color:rgba(255,255,255,.2)!important}
+.story h2{font:700 clamp(26px,5vw,38px)/1.2 var(--sans)!important;text-transform:uppercase;color:var(--ink)}
+.story p{color:var(--muted)}
+/* fillings page cards */
+.fl-card{background:var(--card)!important;border:0!important;border-radius:4px!important;box-shadow:0 6px 14px rgba(60,30,30,.16)!important}
+.fl-photo{position:relative;aspect-ratio:1/1!important}
+.fl-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(rgba(239,232,229,0),var(--card))}
+.fl-body h3{font:700 20px var(--sans)!important;color:var(--ink)!important;letter-spacing:.5px}
+.fl-body p{color:var(--muted)!important;font-family:var(--sans)}
+.fl-weight{color:var(--ink)!important}
+.fl-allergens span{background:transparent!important;border-color:#cfc4c1!important;color:var(--ink)!important}
+.no-photo .fl-body{border-top:4px solid var(--green)}
+.fl-intro h1{font:700 clamp(32px,6vw,48px)/1.1 var(--sans)!important;text-transform:uppercase;color:var(--ink)}
+.fl-cta{background:var(--card)!important}
+.products .product h3,.products .product p{width:auto!important;text-align:center;display:block!important}
+.whatsapp-float{right:22px!important;left:auto!important;bottom:calc(22px + env(safe-area-inset-bottom))!important}
+.whatsapp-float{position:fixed!important;z-index:20;align-items:center;color:#fff}
