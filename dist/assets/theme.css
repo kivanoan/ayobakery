@@ -85,3 +85,9 @@ dialog img{display:block;width:100%!important;max-height:300px!important;object-
 #productDialog h2,#productDialog .detail-desc{text-align:center}
 #productDialog .detail-desc{margin:0 0 8px}
 #cartDialog h2{padding-right:44px}
+
+/* keep logo and accents visible on burgundy */
+.brandmark{mix-blend-mode:normal!important;background:#fff;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+footer .brandmark{width:84px!important;height:84px!important}
+.flavours .eyebrow,.flavours .flavour-proof{color:rgba(255,255,255,.82)!important}
+.whatsapp-float{border:3px solid #fff!important}
