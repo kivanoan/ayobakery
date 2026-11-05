@@ -5,11 +5,11 @@ const cakes = [
   {name:'Chocolate Celebration Cake',img:'ayo-03.jpg',cat:'signature',type:'cake',top:0,desc:'Chocolate cake finished by hand with dried florals.'},
   {name:'Pavlova with Raspberries & Figs',img:'ayo-21.jpg',cat:'signature',type:'cake',top:0,desc:'Layers of crisp meringue and cream, topped with raspberries and figs.'},
   {name:'Strawberry Napoleon',img:'ayo-11.jpg',cat:'signature',type:'cake',top:0,desc:'Napoleon with a golden crumb finish and a ring of fresh strawberries.'},
-  {name:'Honey Cake',img:'photo-2648.jpg',cat:'classic',type:'cake',top:6,desc:'Tender honey layers with a delicate cream filling.'},
-  {name:'Napoleon',img:'photo-2649.jpg',cat:'classic',type:'cake',top:8,desc:'Crisp pastry layers with smooth vanilla cream.'},
-  {name:'Pistachio Raspberry Cake',img:'photo-2643.jpg',cat:'classic',type:'cake',top:2,desc:'Pistachio sponge layered with cream and raspberry.'},
-  {name:'Black Forest',img:'photo-2647.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate, cream and cherry in a timeless combination.'},
-  {name:'Nutella Cake',img:'photo-2641.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate layers with a smooth hazelnut cocoa filling.'},
+  {name:'Honey Cake',img:'photo-2648.jpg',cat:'classic',type:'cake',top:6,desc:'Honey sponge layers soaked in light sour cream, with caramel and natural honey notes.'},
+  {name:'Napoleon',img:'photo-2649.jpg',cat:'classic',type:'cake',top:8,desc:'Hand-made puff pastry layered with vanilla custard cream.'},
+  {name:'Pistachio Raspberry Cake',img:'photo-2643.jpg',cat:'classic',type:'cake',top:2,desc:'Pistachio sponge, raspberry jelly, pistachio cheesecake and pistachio cream.'},
+  {name:'Black Forest',img:'photo-2647.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate sponge, cherry confit, milk chocolate cheesecake and chocolate cream.'},
+  {name:'Nutella Cake',img:'photo-2641.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate sponge, a crunchy chocolate layer and chocolate cream made with Nutella.'},
   {name:'San Sebastián Cheesecake',img:'photo-2638.jpg',cat:'cheesecake',type:'cheesecake',top:3,desc:'A rich Basque-style cheesecake with a deeply caramelized top.'},
   {name:'New York Cheesecake',img:'photo-2640.jpg',cat:'cheesecake',type:'cheesecake',top:0,desc:'Classic baked cheesecake on a golden crumb base.'},
   {name:'Cherry Cheesecake',img:'photo-2639.jpg',cat:'cheesecake',type:'cheesecake',top:0,desc:'Creamy cheesecake topped with glossy cherries.'},
@@ -19,9 +19,9 @@ const cakes = [
   {name:'Mini Honey Cakes',img:'ayo-14.jpg',cat:'desserts',type:'dessert',top:0,desc:'Individual honey cakes with a golden crumb coating.'},
   {name:'Glazed Cake Bars',img:'ayo-08.jpg',cat:'desserts',type:'dessert',top:0,desc:'Sponge cake bars dipped in a colourful glaze.'},
   {name:'Halloween Berry Pie',img:'ayo-24.jpg',cat:'desserts',type:'dessert',top:0,desc:'A seasonal berry pie with a playful carved crust.'},
-  {name:'Pistachio Raspberry Cookie',img:'photo-2646.jpg',cat:'cookies',type:'cookie',top:0,desc:'Pistachio cookie with raspberry and pistachio cream.'},
-  {name:'Choco Hazelnut Cookie',img:'photo-2651.jpg',cat:'cookies',type:'cookie',top:0,desc:'Chocolate cookie with hazelnut and chocolate.'},
-  {name:'Peanut Caramel Cookie',img:'photo-2650.jpg',cat:'cookies',type:'cookie',top:0,desc:'A generous cookie topped with peanut and caramel.'}
+  {name:'Pistachio Raspberry Cookie',img:'photo-2646.jpg',cat:'cookies',type:'cookie',top:0,desc:'60 g · pistachio cookie with white chocolate, pistachio ganache and berry gel.'},
+  {name:'Choco Hazelnut Cookie',img:'photo-2651.jpg',cat:'cookies',type:'cookie',top:0,desc:'55 g · dark chocolate cookie with ganache, Nutella and roasted hazelnuts.'},
+  {name:'Peanut Caramel Cookie',img:'photo-2650.jpg',cat:'cookies',type:'cookie',top:0,desc:'55 g · peanut and milk chocolate cookie with salted caramel and peanut paste.'}
 ];
 let chosen=0, bag=[];
 try { bag=JSON.parse(localStorage.getItem('emeraldBag')||'[]'); if(!Array.isArray(bag)) bag=[]; } catch { bag=[]; }
@@ -52,7 +52,7 @@ render();
 const customCakes=[
  ['Fruit & Fig Wedding Cake','photo-2623.jpg'],['Pearl Tier Wedding Cake','photo-2624.jpg'],['Red Bow Wedding Cake','photo-2625.jpg'],['Raspberry Top Cake','photo-2626.jpg'],['Berry Celebration Cake','photo-2627.jpg'],['Just Married Tiramisu','photo-2628.jpg'],['Orchid Floral Wedding Cake','photo-2629.jpg'],['White Floral Sheet Cake','photo-2630.jpg'],['Raspberry Crown Cake','photo-2632.jpg'],['Ruffled Cream Cake','photo-2633.jpg'],['Burgundy Heart Cake','photo-2634.jpg'],['Strawberry Blueberry Cake','photo-2635.jpg'],['Red Petal Heart Cake','photo-2636.jpg'],['Blackberry Blueberry Cake','photo-2637.jpg']
 ];
-const flavorCards=[['San Sebastián Cheesecake','photo-2638.jpg'],['Cherry Cheesecake','photo-2639.jpg'],['New York Cheesecake','photo-2640.jpg'],['Nutella Cake','photo-2641.jpg'],['Pistachio Raspberry','photo-2652.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Black Forest','photo-2647.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Peanut Caramel','photo-2650.jpg'],['Choco Hazelnut','photo-2651.jpg']];
+const flavorCards=[['Pistachio Raspberry','photo-2643.jpg'],['Black Forest','photo-2647.jpg'],['Nutella','photo-2641.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Vanilla Berries','ayo-20.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Peanut Caramel Cookie','photo-2650.jpg'],['Choco Hazelnut Cookie','photo-2651.jpg']];
 function renderCarousel(id,items){const root=document.getElementById(id);root.innerHTML=items.map(([name,img,poster])=>`<article class="editorial-card">${img.endsWith('.mp4')?`<video src="assets/${img}" poster="assets/${poster}" autoplay muted loop playsinline preload="metadata" aria-label="${name}"></video>`:`<img src="assets/${img}" alt="${name}" loading="lazy">`}<h3>${name}</h3></article>`).join('');}
 renderCarousel('customCakeTrack',customCakes);renderCarousel('flavorTrack',flavorCards);
 const galleryDescriptions=[
@@ -96,7 +96,7 @@ $('#orderNow').onclick=()=>{if(!needDate())return;window.open('https://wa.me/194
 function showBag(){const root=$('#cartItems');root.replaceChildren();if(!bag.length)root.textContent='Your bag is empty. Find a cake you love in the collection.';bag.forEach((x,i)=>{const row=document.createElement('div');row.className='basket-line';const text=document.createElement('span');text.textContent=itemText(x);const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{bag.splice(i,1);update();showBag();};row.append(text,remove);root.append(row);});$('#checkout').disabled=!bag.length;}
 $('#cart').onclick=()=>{showBag();$('#cartDialog').showModal();};
 $('#checkout').onclick=()=>{$('#cartDialog').close();$('textarea').value=bag.map(itemText).join('\n');const dates=bag.map(x=>x.date).filter(Boolean).sort();if(dates[0])$('#enquiry [name=date]').value=dates[0];if(bag.some(x=>x.method==='Delivery')){methodSel.value='Delivery';methodSel.onchange();}location.hash='contact';};
-$('#guide').onclick=()=>$('#guideDialog').showModal();$('#guideShop').onclick=()=>$('#guideDialog').close();
+
 $('#enquiry [name=date]').min=minOrderDate();
 $('#enquiry').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);const message=['Hello AYO Pâtisserie, I would like to order.','Name: '+f.get('name'),'Phone: '+f.get('phone'),'Date: '+prettyDate(f.get('date')),'Pickup or delivery: '+f.get('method')+(f.get('address')?' — '+f.get('address'):''),'Occasion: '+f.get('occasion'),'Order: '+f.get('details')].join('\n');window.location.href='https://wa.me/19423816621?text='+encodeURIComponent(message);};
 const methodSel=document.querySelector('#enquiry [name=method]'),addr=document.querySelector('#enquiry [name=address]');methodSel.onchange=()=>{addr.hidden=methodSel.value!=='Delivery';addr.required=!addr.hidden;};
