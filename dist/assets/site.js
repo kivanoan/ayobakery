@@ -26,7 +26,7 @@ const cakes = [
 let chosen=0, bag=[];
 try { bag=JSON.parse(localStorage.getItem('emeraldBag')||'[]'); if(!Array.isArray(bag)) bag=[]; } catch { bag=[]; }
 const $=s=>document.querySelector(s);
-const leadNotes={top:'Order at least 2 days ahead · Delivery across Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',all:'Order at least 2 days ahead · Delivery across Toronto'};
+const leadNotes={top:'Order at least 2 days ahead · Delivery across Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',custom:'Made to order · choose your filling, size and design',all:'Order at least 2 days ahead · Delivery across Toronto'};
 function render(filter='top') {
   const list=cakes.map((c,i)=>[c,i]).filter(([c])=>filter==='all'||(filter==='top'?c.top:c.cat===filter));if(filter==='top')list.sort((a,b)=>a[0].top-b[0].top);
   $('#products').innerHTML=list.map(([c,i])=>`<button class="product" data-cake="${i}"><div class="photo"><img src="assets/${c.img}" alt="${c.name}" loading="lazy"><span class="plus" aria-hidden="true">+</span></div><h3>${c.name}</h3><p>${c.desc}</p></button>`).join('');
@@ -39,6 +39,8 @@ const KITCHEN_NOTE='Made in a kitchen that handles milk, eggs, gluten, nuts, pea
 function showAllergens(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#allergenText').innerHTML='<b>Allergens:</b> choose a filling to see its allergens. '+KITCHEN_NOTE;return;}let a=c.type==='cake'?FILLING_ALLERGENS[fillingOf(c)]:ITEM_ALLERGENS[c.name];$('#allergenText').innerHTML=(a?'<b>Allergens:</b> '+a+'. ':'<b>Allergens:</b> please ask us about this dessert. ')+KITCHEN_NOTE;}
 const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry Napoleon':'Napoleon','Pistachio Raspberry Cake':'Pistachio Raspberry','Black Forest':'Black Forest','Nutella Cake':'Nutella'};
 function fillingOf(c){return FIXED_FILLING[c.name]||$('#filling').value;}
+const SIZES={standard:['6–8 servings','10–12 servings','16–20 servings'],custom:['6–8 servings','10–12 servings','16–20 servings','25–30 servings (2 tiers)','40–50 servings (3 tiers)','60+ servings (tell us more)']};
+function setSizes(kind){const sel=$('#size');sel.innerHTML=SIZES[kind].map(x=>`<option>${x}</option>`).join('');}
 const LEAD_DAYS=2;
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function minOrderDate(){const d=new Date();d.setDate(d.getDate()+LEAD_DAYS);return isoDate(d);}
@@ -47,12 +49,12 @@ function openCake(i){
   chosen=i;const c=cakes[i],whole=c.type==='cake'||c.type==='cheesecake';
   $('#detailTitle').textContent=c.name;$('#detailDesc').textContent=c.desc;$('#detailImg').src='assets/'+c.img;$('#detailImg').alt=c.name;
   const fixed=FIXED_FILLING[c.name];$('#fillingRow').hidden=c.type!=='cake'||!!fixed;$('#fixedFilling').hidden=!fixed;$('#fixedFilling').innerHTML=fixed?'<b>Filling:</b> '+fixed+' · <a href="fillings.html" target="_blank">what’s inside ↗</a>':'';$('#filling').value='';$('#fillingNote').textContent='';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
-  $('#qty').value='4';$('#message').value='';$('#allergy').value='';
+  const custom=c.cat==='custom';setSizes(custom?'custom':'standard');$('#messageLabel').textContent=custom?'Design wishes (colours, decor, text on the cake)':'Message on the cake (optional)';$('#message').maxLength=custom?240:60;$('#message').placeholder=custom?'e.g. white and burgundy, fresh berries, “Happy 30th, Aya”':'Happy birthday, with love…';$('#qty').value='4';$('#message').value='';$('#allergy').value='';
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
   showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
-function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',custom:c.cat==='custom',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
+function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&((x.custom?'design: ':'message: ')+'“'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
 function needFilling(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#fillingNote').textContent='Please choose a filling.';$('#filling').focus();return false;}return true;}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
 render();
@@ -62,6 +64,13 @@ const customCakes=[
 const flavorCards=[['Pistachio Raspberry','photo-2643.jpg'],['Black Forest','photo-2647.jpg'],['Nutella','photo-2641.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Vanilla Berries','ayo-20.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Peanut Caramel Cookie','photo-2650.jpg'],['Choco Hazelnut Cookie','photo-2651.jpg']];
 function renderCarousel(id,items){const root=document.getElementById(id);root.innerHTML=items.map(([name,img,poster])=>`<article class="editorial-card">${img.endsWith('.mp4')?`<video src="assets/${img}" poster="assets/${poster}" autoplay muted loop playsinline preload="metadata" aria-label="${name}"></video>`:`<img src="assets/${img}" alt="${name}" loading="lazy">`}<h3>${name}</h3></article>`).join('');}
 renderCarousel('customCakeTrack',customCakes);renderCarousel('flavorTrack',flavorCards);
+// custom & wedding cakes are orderable too
+const CUSTOM_DESC='Made to order. Choose your filling and size, and tell us about colours, decor or text.';
+const customStart=cakes.length;
+customCakes.forEach(([name,img])=>cakes.push({name,img,cat:'custom',type:'cake',top:0,desc:CUSTOM_DESC}));
+document.querySelectorAll('#customCakeTrack .editorial-card').forEach((card,k)=>{card.setAttribute('role','button');card.tabIndex=0;card.classList.add('clickable');const open=()=>openCake(customStart+k);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}};});
+document.querySelectorAll('#flavorTrack .editorial-card').forEach(card=>{card.classList.add('clickable');card.onclick=()=>{location.href='fillings.html';};});
+
 const gallery=[['ayo-05.jpg','Berry charlotte with fresh berries and a satin ribbon.'],['ayo-21.jpg','Pavlova with raspberries and figs.'],['ayo-23.jpg','Red velvet berry cake with a burgundy bow.'],['ayo-16.jpg','Fruit illusion desserts with a creamy berry centre.'],['ayo-18.jpg','Meringue roll with figs and blueberries.'],['ayo-03.jpg','Chocolate celebration cake with dried florals.'],['ayo-20.jpg','Vanilla strawberry cake.'],['ayo-19.jpg','Cream dessert cups with blueberries and caramel.'],['ayo-14.jpg','Mini honey cakes in paper cases.'],['ayo-11.jpg','Strawberry Napoleon with a golden crumb finish.'],['ayo-08.jpg','Glazed sponge cake bars.'],['ayo-25.jpg','Meringue rolls with figs and blueberries.'],['ayo-12.jpg','Close-up of piped caramel cream.'],['ayo-24.jpg','Halloween berry pie with a carved crust.']];
 const photoWall=$('#photoWall');
 gallery.forEach(([f,alt])=>{const img=document.createElement('img');img.src='assets/'+f;img.alt=alt;img.loading='lazy';photoWall.append(img);});
