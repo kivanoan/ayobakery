@@ -33,6 +33,10 @@ function render(filter='top') {
   const note=$('#leadNote');if(note)note.textContent=leadNotes[filter]||'';
   document.querySelectorAll('[data-cake]').forEach(b=>b.onclick=()=>openCake(+b.dataset.cake));
 }
+const FILLING_ALLERGENS={'Pistachio Raspberry':'Milk, Eggs, Gluten, Pistachio','Vanilla Berries':'Milk, Eggs, Gluten','Black Forest':'Milk, Eggs, Gluten, Gelatine (fish)','Peanut Caramel':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Nutella':'Milk, Eggs, Gluten, Hazelnuts, Soy','Honey Cake':'Milk, Eggs, Gluten','Banana Caramel':'Milk, Eggs, Gluten, Gelatine (fish)','Napoleon':'Milk, Eggs, Gluten'};
+const ITEM_ALLERGENS={'Pistachio Raspberry Cookie':'Milk, Eggs, Gluten, Pistachio','Peanut Caramel Cookie':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Choco Hazelnut Cookie':'Milk, Eggs, Gluten, Hazelnuts, Soy'};
+const KITCHEN_NOTE='Made in a kitchen that handles milk, eggs, gluten, nuts, peanuts and soy.';
+function showAllergens(){const c=cakes[chosen];let a=c.type==='cake'?FILLING_ALLERGENS[$('#filling').value]:ITEM_ALLERGENS[c.name];$('#allergenText').innerHTML=(a?'<b>Allergens:</b> '+a+'. ':'<b>Allergens:</b> please ask us about this dessert. ')+KITCHEN_NOTE;}
 const LEAD_DAYS=2;
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function minOrderDate(){const d=new Date();d.setDate(d.getDate()+LEAD_DAYS);return isoDate(d);}
@@ -41,12 +45,12 @@ function openCake(i){
   chosen=i;const c=cakes[i],whole=c.type==='cake'||c.type==='cheesecake';
   $('#detailTitle').textContent=c.name;$('#detailDesc').textContent=c.desc;$('#detailImg').src='assets/'+c.img;$('#detailImg').alt=c.name;
   $('#fillingRow').hidden=c.type!=='cake';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
-  $('#qty').value='4';$('#message').value='';
+  $('#qty').value='4';$('#message').value='';$('#allergy').value='';
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
-  $('#productDialog').showModal();
+  showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?$('#filling').value:'',message:whole?$('#message').value.trim():'',date:$('#orderDate').value,method:$('#method').value};}
-function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.date&&('date: '+prettyDate(x.date)),x.method].filter(Boolean).join(' · ');}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?$('#filling').value:'',message:whole?$('#message').value.trim():'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value,method:$('#method').value};}
+function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&('message: “'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('date: '+prettyDate(x.date)),x.method].filter(Boolean).join(' · ');}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
 render();
 const customCakes=[
@@ -91,6 +95,7 @@ $('#viewAll').onclick=()=>document.querySelector('[data-filter="all"]').click();
 document.querySelectorAll('[data-scroll]').forEach(b=>b.onclick=()=>{const target=$('#'+b.dataset.scroll);target.scrollBy({left:Number(b.dataset.direction)*target.clientWidth*.82,behavior:'smooth'});});
 document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d&&e.offsetX<0)d.close();}));
+$('#filling').onchange=showAllergens;
 $('#add').onclick=()=>{if(!needDate())return;bag.push(currentItem());update();$('#productDialog').close();$('#toast').textContent='Added to your bag';$('#toast').style.display='block';setTimeout(()=>$('#toast').style.display='none',2500);};
 $('#orderNow').onclick=()=>{if(!needDate())return;window.open('https://wa.me/19423816621?text='+encodeURIComponent('Hello AYO Pâtisserie, I would like to order:\n'+itemText(currentItem())),'_blank','noopener');};
 function showBag(){const root=$('#cartItems');root.replaceChildren();if(!bag.length)root.textContent='Your bag is empty. Find a cake you love in the collection.';bag.forEach((x,i)=>{const row=document.createElement('div');row.className='basket-line';const text=document.createElement('span');text.textContent=itemText(x);const remove=document.createElement('button');remove.textContent='Remove';remove.onclick=()=>{bag.splice(i,1);update();showBag();};row.append(text,remove);root.append(row);});$('#checkout').disabled=!bag.length;}
@@ -98,7 +103,7 @@ $('#cart').onclick=()=>{showBag();$('#cartDialog').showModal();};
 $('#checkout').onclick=()=>{$('#cartDialog').close();$('textarea').value=bag.map(itemText).join('\n');const dates=bag.map(x=>x.date).filter(Boolean).sort();if(dates[0])$('#enquiry [name=date]').value=dates[0];if(bag.some(x=>x.method==='Delivery')){methodSel.value='Delivery';methodSel.onchange();}location.hash='contact';};
 
 $('#enquiry [name=date]').min=minOrderDate();
-$('#enquiry').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);const message=['Hello AYO Pâtisserie, I would like to order.','Name: '+f.get('name'),'Phone: '+f.get('phone'),'Date: '+prettyDate(f.get('date')),'Pickup or delivery: '+f.get('method')+(f.get('address')?' — '+f.get('address'):''),'Occasion: '+f.get('occasion'),'Order: '+f.get('details')].join('\n');window.location.href='https://wa.me/19423816621?text='+encodeURIComponent(message);};
+$('#enquiry').onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);const message=['Hello AYO Pâtisserie, I would like to order.','Name: '+f.get('name'),'Phone: '+f.get('phone'),'Date: '+prettyDate(f.get('date')),'Pickup or delivery: '+f.get('method')+(f.get('address')?' — '+f.get('address'):''),'Occasion: '+f.get('occasion'),'Allergies: '+(f.get('allergy')||'none'),'Order: '+f.get('details')].join('\n');window.location.href='https://wa.me/19423816621?text='+encodeURIComponent(message);};
 const methodSel=document.querySelector('#enquiry [name=method]'),addr=document.querySelector('#enquiry [name=address]');methodSel.onchange=()=>{addr.hidden=methodSel.value!=='Delivery';addr.required=!addr.hidden;};
 const menuToggle=$('#menuToggle'),mainNav=$('#mainNav');
 menuToggle.onclick=()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');menuToggle.textContent=open?'×':'☰';mainNav.classList.toggle('open',open);};
