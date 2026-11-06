@@ -14,11 +14,11 @@ const cakes = [
   {name:'San Sebastián Cheesecake',img:'photo-2638.jpg',cat:'cheesecake',type:'cheesecake',top:3,desc:'A rich Basque-style cheesecake with a deeply caramelized top.'},
   {name:'New York Cheesecake',img:'photo-2640.jpg',cat:'cheesecake',type:'cheesecake',top:0,desc:'Classic baked cheesecake on a golden crumb base.'},
   {name:'Cherry Cheesecake',img:'photo-2639.jpg',cat:'cheesecake',type:'cheesecake',top:0,desc:'Creamy cheesecake topped with glossy cherries.'},
-  {name:'Fruit Illusion Desserts',img:'ayo-16.jpg',cat:'desserts',type:'dessert',top:5,desc:'Fruit-shaped mousse desserts with a creamy berry centre.'},
+  {name:'Fruit Illusion Desserts',img:'ayo-16.jpg',cat:'desserts',type:'dessert',top:5,pack:6,desc:'Box of 6 · fruit-shaped mousse desserts with a creamy berry centre.'},
   {name:'Meringue Roll',img:'ayo-18.jpg',cat:'desserts',type:'dessert',top:7,desc:'Crisp meringue roll with cream, fresh figs and blueberries.'},
   {name:'Cream Dessert Cups',img:'ayo-19.jpg',cat:'desserts',type:'dessert',top:0,desc:'Individual cake cups with cream, blueberries and caramel.'},
   {name:'Mini Honey Cakes',img:'ayo-14.jpg',cat:'desserts',type:'dessert',top:0,desc:'Individual honey cakes with a golden crumb coating.'},
-  {name:'Glazed Cake Bars',img:'ayo-08.jpg',cat:'desserts',type:'dessert',top:0,desc:'Sponge cake bars dipped in a colourful glaze.'},
+  {name:'Mini Cake Bars',img:'ayo-08.jpg',cat:'desserts',type:'dessert',top:0,pack:6,desc:'Box of 6 · mini sponge cake bars dipped in a colourful glaze.'},
   {name:'Halloween Berry Pie',img:'ayo-24.jpg',cat:'desserts',type:'dessert',top:0,desc:'A seasonal berry pie with a playful carved crust.'},
   {name:'Pistachio Raspberry Cookie',img:'photo-2646.jpg',cat:'cookies',type:'cookie',top:0,desc:'60 g · pistachio cookie with white chocolate, pistachio ganache and berry gel.'},
   {name:'Choco Hazelnut Cookie',img:'photo-2651.jpg',cat:'cookies',type:'cookie',top:0,desc:'55 g · dark chocolate cookie with ganache, Nutella and roasted hazelnuts.'},
@@ -42,6 +42,8 @@ const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry
 function fillingOf(c){return FIXED_FILLING[c.name]||$('#filling').value;}
 const SIZES={standard:['6–8 servings','10–12 servings','16–20 servings'],custom:['6–8 servings','10–12 servings','16–20 servings','25–30 servings (2 tiers)','40–50 servings (3 tiers)','60+ servings (tell us more)']};
 function setSizes(kind){const sel=$('#size');sel.innerHTML=SIZES[kind].map(x=>`<option>${x}</option>`).join('');}
+function setQty(c){const sel=$('#qty');if(c.pack){sel.innerHTML=[1,2,3,4].map(n=>`<option value="${n}">${n} box${n>1?'es':''} (${n*c.pack} pcs)</option>`).join('');sel.value='1';$('#qtyLabel').textContent='Number of boxes';}else{sel.innerHTML=[2,4,6,9,12].map(n=>`<option value="${n}">${n} pcs</option>`).join('');sel.value='4';$('#qtyLabel').textContent='Quantity';}}
+function qtyText(c){const n=+$('#qty').value;return c.pack?`${n} box${n>1?'es':''} of ${c.pack} (${n*c.pack} pcs)`:n+' pcs';}
 const LEAD_DAYS=2;
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function minOrderDate(){const d=new Date();d.setDate(d.getDate()+LEAD_DAYS);return isoDate(d);}
@@ -50,11 +52,11 @@ function openCake(i){
   chosen=i;const c=cakes[i],whole=c.type==='cake'||c.type==='cheesecake';
   $('#detailTitle').textContent=c.name;$('#detailDesc').textContent=c.desc;$('#detailImg').src='assets/'+c.img;$('#detailImg').alt=c.name;
   const fixed=FIXED_FILLING[c.name];$('#fillingRow').hidden=c.type!=='cake'||!!fixed;$('#fixedFilling').hidden=!fixed;$('#fixedFilling').innerHTML=fixed?'<b>Filling:</b> '+fixed+' · <a href="fillings.html" target="_blank">what’s inside ↗</a>':'';$('#filling').value='';$('#fillingNote').textContent='';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
-  const custom=c.cat==='custom';setSizes(custom?'custom':'standard');$('#messageLabel').textContent=custom?'Design wishes (colours, decor, text on the cake)':'Message on the cake (optional)';$('#message').maxLength=custom?240:60;$('#message').placeholder=custom?'e.g. white and burgundy, fresh berries, “Happy 30th, Aya”':'Happy birthday, with love…';$('#qty').value='4';$('#message').value='';$('#allergy').value='';
+  const custom=c.cat==='custom';setSizes(custom?'custom':'standard');$('#messageLabel').textContent=custom?'Design wishes (colours, decor, text on the cake)':'Message on the cake (optional)';$('#message').maxLength=custom?240:60;$('#message').placeholder=custom?'e.g. white and burgundy, fresh berries, “Happy 30th, Aya”':'Happy birthday, with love…';setQty(c);$('#message').value='';$('#allergy').value='';
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
   showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:$('#qty').value+' pcs',filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',custom:c.cat==='custom',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:qtyText(c),filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',custom:c.cat==='custom',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
 function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&((x.custom?'design: ':'message: ')+'“'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
 function needFilling(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#fillingNote').textContent='Please choose a filling.';$('#filling').focus();return false;}return true;}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
@@ -72,7 +74,7 @@ customCakes.forEach(([name,img])=>cakes.push({name,img,cat:'custom',type:'cake',
 document.querySelectorAll('#customCakeTrack .editorial-card').forEach((card,k)=>{card.setAttribute('role','button');card.tabIndex=0;card.classList.add('clickable');const open=()=>openCake(customStart+k);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}};});
 document.querySelectorAll('#flavorTrack .editorial-card').forEach(card=>{card.classList.add('clickable');card.onclick=()=>{location.href='fillings.html';};});
 
-const gallery=[['ayo-05.jpg','Berry charlotte with fresh berries and a satin ribbon.'],['ayo-21.jpg','Pavlova with raspberries and figs.'],['ayo-23.jpg','Red velvet berry cake with a burgundy bow.'],['ayo-16.jpg','Fruit illusion desserts with a creamy berry centre.'],['ayo-18.jpg','Meringue roll with figs and blueberries.'],['ayo-03.jpg','Chocolate celebration cake with dried florals.'],['ayo-20.jpg','Vanilla strawberry cake.'],['ayo-19.jpg','Cream dessert cups with blueberries and caramel.'],['ayo-14.jpg','Mini honey cakes in paper cases.'],['ayo-11.jpg','Strawberry Napoleon with a golden crumb finish.'],['ayo-08.jpg','Glazed sponge cake bars.'],['ayo-25.jpg','Meringue rolls with figs and blueberries.'],['ayo-12.jpg','Close-up of piped caramel cream.'],['ayo-24.jpg','Halloween berry pie with a carved crust.']];
+const gallery=[['ayo-05.jpg','Berry charlotte with fresh berries and a satin ribbon.'],['ayo-21.jpg','Pavlova with raspberries and figs.'],['ayo-23.jpg','Red velvet berry cake with a burgundy bow.'],['ayo-16.jpg','Fruit illusion desserts with a creamy berry centre.'],['ayo-18.jpg','Meringue roll with figs and blueberries.'],['ayo-03.jpg','Chocolate celebration cake with dried florals.'],['ayo-20.jpg','Vanilla strawberry cake.'],['ayo-19.jpg','Cream dessert cups with blueberries and caramel.'],['ayo-14.jpg','Mini honey cakes in paper cases.'],['ayo-11.jpg','Strawberry Napoleon with a golden crumb finish.'],['ayo-08.jpg','Mini cake bars, 6 in a box.'],['ayo-25.jpg','Meringue rolls with figs and blueberries.'],['ayo-12.jpg','Close-up of piped caramel cream.'],['ayo-24.jpg','Halloween berry pie with a carved crust.']];
 const photoWall=$('#photoWall');
 gallery.forEach(([f,alt])=>{const img=document.createElement('img');img.src='assets/'+f;img.alt=alt;img.loading='lazy';photoWall.append(img);});
 function update(){ $('#count').textContent=bag.length;localStorage.setItem('emeraldBag',JSON.stringify(bag)); }
