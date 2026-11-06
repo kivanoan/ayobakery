@@ -9,6 +9,7 @@ const cakes = [
   {name:'Napoleon',img:'photo-2649.jpg',cat:'classic',type:'cake',top:8,desc:'Hand-made puff pastry layered with vanilla custard cream.'},
   {name:'Pistachio Raspberry Cake',img:'photo-2643.jpg',cat:'classic',type:'cake',top:2,desc:'Pistachio sponge, raspberry jelly, pistachio cheesecake and pistachio cream.'},
   {name:'Black Forest',img:'photo-2647.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate sponge, cherry confit, milk chocolate cheesecake and chocolate cream.'},
+  {name:'Carrot Cake',img:'carrot-cake.jpg',cat:'classic',type:'cake',top:0,desc:'Spiced carrot sponge with walnuts, layered with cream cheese frosting.'},
   {name:'Nutella Cake',img:'photo-2641.jpg',cat:'classic',type:'cake',top:0,desc:'Chocolate sponge, a crunchy chocolate layer and chocolate cream made with Nutella.'},
   {name:'San Sebastián Cheesecake',img:'photo-2638.jpg',cat:'cheesecake',type:'cheesecake',top:3,desc:'A rich Basque-style cheesecake with a deeply caramelized top.'},
   {name:'New York Cheesecake',img:'photo-2640.jpg',cat:'cheesecake',type:'cheesecake',top:0,desc:'Classic baked cheesecake on a golden crumb base.'},
@@ -33,11 +34,11 @@ function render(filter='top') {
   const note=$('#leadNote');if(note)note.textContent=leadNotes[filter]||'';
   document.querySelectorAll('[data-cake]').forEach(b=>b.onclick=()=>openCake(+b.dataset.cake));
 }
-const FILLING_ALLERGENS={'Pistachio Raspberry':'Milk, Eggs, Gluten, Pistachio','Vanilla Berries':'Milk, Eggs, Gluten','Black Forest':'Milk, Eggs, Gluten, Gelatine (fish)','Peanut Caramel':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Nutella':'Milk, Eggs, Gluten, Hazelnuts, Soy','Honey Cake':'Milk, Eggs, Gluten','Banana Caramel':'Milk, Eggs, Gluten, Gelatine (fish)','Napoleon':'Milk, Eggs, Gluten'};
+const FILLING_ALLERGENS={'Pistachio Raspberry':'Milk, Eggs, Gluten, Pistachio','Vanilla Berries':'Milk, Eggs, Gluten','Black Forest':'Milk, Eggs, Gluten, Gelatine (fish)','Peanut Caramel':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Nutella':'Milk, Eggs, Gluten, Hazelnuts, Soy','Honey Cake':'Milk, Eggs, Gluten','Banana Caramel':'Milk, Eggs, Gluten, Gelatine (fish)','Napoleon':'Milk, Eggs, Gluten','Carrot Cake':'Milk, Eggs, Gluten, Walnuts'};
 const ITEM_ALLERGENS={'Pistachio Raspberry Cookie':'Milk, Eggs, Gluten, Pistachio','Peanut Caramel Cookie':'Milk, Eggs, Gluten, Peanuts, Gelatine (fish)','Choco Hazelnut Cookie':'Milk, Eggs, Gluten, Hazelnuts, Soy'};
 const KITCHEN_NOTE='Made in a kitchen that handles milk, eggs, gluten, nuts, peanuts and soy.';
 function showAllergens(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#allergenText').innerHTML='<b>Allergens:</b> choose a filling to see its allergens. '+KITCHEN_NOTE;return;}let a=c.type==='cake'?FILLING_ALLERGENS[fillingOf(c)]:ITEM_ALLERGENS[c.name];$('#allergenText').innerHTML=(a?'<b>Allergens:</b> '+a+'. ':'<b>Allergens:</b> please ask us about this dessert. ')+KITCHEN_NOTE;}
-const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry Napoleon':'Napoleon','Pistachio Raspberry Cake':'Pistachio Raspberry','Black Forest':'Black Forest','Nutella Cake':'Nutella'};
+const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry Napoleon':'Napoleon','Pistachio Raspberry Cake':'Pistachio Raspberry','Black Forest':'Black Forest','Nutella Cake':'Nutella','Carrot Cake':'Carrot Cake'};
 function fillingOf(c){return FIXED_FILLING[c.name]||$('#filling').value;}
 const SIZES={standard:['6–8 servings','10–12 servings','16–20 servings'],custom:['6–8 servings','10–12 servings','16–20 servings','25–30 servings (2 tiers)','40–50 servings (3 tiers)','60+ servings (tell us more)']};
 function setSizes(kind){const sel=$('#size');sel.innerHTML=SIZES[kind].map(x=>`<option>${x}</option>`).join('');}
@@ -61,7 +62,7 @@ render();
 const customCakes=[
  ['Chocolate Hazelnut Cake','custom-hazelnut-cake.jpg'],['Fig & Blackberry Cake','custom-fig-berry-cake.jpg'],['Fruit & Fig Wedding Cake','photo-2623.jpg'],['Pearl Tier Wedding Cake','photo-2624.jpg'],['Red Bow Wedding Cake','photo-2625.jpg'],['Raspberry Top Cake','photo-2626.jpg'],['Berry Celebration Cake','photo-2627.jpg'],['Just Married Tiramisu','photo-2628.jpg'],['Orchid Floral Wedding Cake','photo-2629.jpg'],['White Floral Sheet Cake','photo-2630.jpg'],['Raspberry Crown Cake','photo-2632.jpg'],['Ruffled Cream Cake','photo-2633.jpg'],['Burgundy Heart Cake','photo-2634.jpg'],['Strawberry Blueberry Cake','photo-2635.jpg'],['Red Petal Heart Cake','photo-2636.jpg'],['Blackberry Blueberry Cake','photo-2637.jpg']
 ];
-const flavorCards=[['Pistachio Raspberry','photo-2643.jpg'],['Black Forest','photo-2647.jpg'],['Nutella','photo-2641.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Vanilla Berries','ayo-20.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Peanut Caramel Cookie','photo-2650.jpg'],['Choco Hazelnut Cookie','photo-2651.jpg']];
+const flavorCards=[['Pistachio Raspberry','photo-2643.jpg'],['Black Forest','photo-2647.jpg'],['Nutella','photo-2641.jpg'],['Honey Cake','photo-2648.jpg'],['Napoleon','photo-2649.jpg'],['Carrot Cake','carrot-cake.jpg'],['Vanilla Berries','ayo-20.jpg'],['Pistachio Raspberry Cookie','photo-2646.jpg'],['Peanut Caramel Cookie','photo-2650.jpg'],['Choco Hazelnut Cookie','photo-2651.jpg']];
 function renderCarousel(id,items){const root=document.getElementById(id);root.innerHTML=items.map(([name,img,poster])=>`<article class="editorial-card">${img.endsWith('.mp4')?`<video src="assets/${img}" poster="assets/${poster}" autoplay muted loop playsinline preload="metadata" aria-label="${name}"></video>`:`<img src="assets/${img}" alt="${name}" loading="lazy">`}<h3>${name}</h3></article>`).join('');}
 renderCarousel('customCakeTrack',customCakes);renderCarousel('flavorTrack',flavorCards);
 // custom & wedding cakes are orderable too
