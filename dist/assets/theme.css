@@ -142,3 +142,4 @@ dialog h2,#productDialog h2{font:400 30px/1.15 'Didot','Bodoni 72',Georgia,serif
 .flavours .editorial-card{border-color:rgba(255,255,255,.35)!important}
 .fixed-filling{text-align:center;margin:4px 0 14px;font-size:14px;color:var(--ink)}.fixed-filling a{text-decoration:underline;color:var(--green)}#fillingNote{display:block;margin-top:6px}
 .editorial-card.clickable{cursor:pointer;transition:transform .2s}.editorial-card.clickable:hover{transform:translateY(-3px)}.editorial-card.clickable:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.filters .holiday-tab{border-color:var(--gold)!important;color:var(--green)}.filters .holiday-tab.active{background:var(--green)!important;color:#fff}#variantNote{display:block;margin-top:6px}

@@ -1,4 +1,5 @@
 const cakes = [
+  {name:'Madeleine Christmas Tree',img:'madeleine-trees.jpg',cat:'holiday',type:'dessert',top:0,whole:true,variants:['Green glaze','White & milk chocolate'],desc:'A tower of glazed madeleines tied with burgundy satin ribbons. Choose green glaze or white & milk chocolate.'},
   {name:'Berry Charlotte',img:'ayo-05.jpg',cat:'signature',type:'cake',top:1,desc:'Ladyfinger charlotte crowned with fresh berries and tied with a satin ribbon.'},
   {name:'Red Velvet Berry Cake',img:'ayo-23.jpg',cat:'signature',type:'cake',top:4,desc:'Red velvet layers and cream, topped with fresh berries and a velvet bow.'},
   {name:'Vanilla Strawberry Cake',img:'ayo-20.jpg',cat:'signature',type:'cake',top:0,desc:'Vanilla cake with soft cream and fresh strawberries.'},
@@ -27,7 +28,7 @@ const cakes = [
 let chosen=0, bag=[];
 try { bag=JSON.parse(localStorage.getItem('emeraldBag')||'[]'); if(!Array.isArray(bag)) bag=[]; } catch { bag=[]; }
 const $=s=>document.querySelector(s);
-const leadNotes={top:'Order at least 2 days ahead · Delivery across Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',custom:'Made to order · choose your filling, size and design',all:'Order at least 2 days ahead · Delivery across Toronto'};
+const leadNotes={top:'Order at least 2 days ahead · Delivery across Toronto',signature:'Whole cakes · order at least 2 days ahead',classic:'Whole cakes · order at least 2 days ahead',cheesecake:'Whole cheesecakes · order at least 2 days ahead',desserts:'Sold by the piece · order at least 2 days ahead',cookies:'Sold by the piece · order at least 2 days ahead',custom:'Made to order · choose your filling, size and design',holiday:'Holiday collection · order at least 2 days ahead · limited season',all:'Order at least 2 days ahead · Delivery across Toronto'};
 function render(filter='top') {
   const list=cakes.map((c,i)=>[c,i]).filter(([c])=>filter==='all'||(filter==='top'?c.top:c.cat===filter));if(filter==='top')list.sort((a,b)=>a[0].top-b[0].top);
   $('#products').innerHTML=list.map(([c,i])=>`<button class="product" data-cake="${i}"><div class="photo"><img src="assets/${c.img}" alt="${c.name}" loading="lazy"><span class="plus" aria-hidden="true">+</span></div><h3>${c.name}</h3><p>${c.desc}</p></button>`).join('');
@@ -42,8 +43,8 @@ const FIXED_FILLING={'Honey Cake':'Honey Cake','Napoleon':'Napoleon','Strawberry
 function fillingOf(c){return FIXED_FILLING[c.name]||$('#filling').value;}
 const SIZES={standard:['6–8 servings','10–12 servings','16–20 servings'],custom:['6–8 servings','10–12 servings','16–20 servings','25–30 servings (2 tiers)','40–50 servings (3 tiers)','60+ servings (tell us more)']};
 function setSizes(kind){const sel=$('#size');sel.innerHTML=SIZES[kind].map(x=>`<option>${x}</option>`).join('');}
-function setQty(c){const sel=$('#qty');if(c.pack){sel.innerHTML=[1,2,3,4].map(n=>`<option value="${n}">${n} box${n>1?'es':''} (${n*c.pack} pcs)</option>`).join('');sel.value='1';$('#qtyLabel').textContent='Number of boxes';}else{sel.innerHTML=[2,4,6,9,12].map(n=>`<option value="${n}">${n} pcs</option>`).join('');sel.value='4';$('#qtyLabel').textContent='Quantity';}}
-function qtyText(c){const n=+$('#qty').value;return c.pack?`${n} box${n>1?'es':''} of ${c.pack} (${n*c.pack} pcs)`:n+' pcs';}
+function setQty(c){const sel=$('#qty');if(c.whole){sel.innerHTML=[1,2,3,4].map(n=>`<option value="${n}">${n} tree${n>1?'s':''}</option>`).join('');sel.value='1';$('#qtyLabel').textContent='Quantity';return;}if(c.pack){sel.innerHTML=[1,2,3,4].map(n=>`<option value="${n}">${n} box${n>1?'es':''} (${n*c.pack} pcs)</option>`).join('');sel.value='1';$('#qtyLabel').textContent='Number of boxes';}else{sel.innerHTML=[2,4,6,9,12].map(n=>`<option value="${n}">${n} pcs</option>`).join('');sel.value='4';$('#qtyLabel').textContent='Quantity';}}
+function qtyText(c){const n=+$('#qty').value;if(c.whole)return n+' tree'+(n>1?'s':'');return c.pack?`${n} box${n>1?'es':''} of ${c.pack} (${n*c.pack} pcs)`:n+' pcs';}
 const LEAD_DAYS=2;
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function minOrderDate(){const d=new Date();d.setDate(d.getDate()+LEAD_DAYS);return isoDate(d);}
@@ -52,13 +53,13 @@ function openCake(i){
   chosen=i;const c=cakes[i],whole=c.type==='cake'||c.type==='cheesecake';
   $('#detailTitle').textContent=c.name;$('#detailDesc').textContent=c.desc;$('#detailImg').src='assets/'+c.img;$('#detailImg').alt=c.name;
   const fixed=FIXED_FILLING[c.name];$('#fillingRow').hidden=c.type!=='cake'||!!fixed;$('#fixedFilling').hidden=!fixed;$('#fixedFilling').innerHTML=fixed?'<b>Filling:</b> '+fixed+' · <a href="fillings.html" target="_blank">what’s inside ↗</a>':'';$('#filling').value='';$('#fillingNote').textContent='';$('#sizeRow').hidden=!whole;$('#messageRow').hidden=!whole;$('#qtyRow').hidden=whole;
-  const custom=c.cat==='custom';setSizes(custom?'custom':'standard');$('#messageLabel').textContent=custom?'Design wishes (colours, decor, text on the cake)':'Message on the cake (optional)';$('#message').maxLength=custom?240:60;$('#message').placeholder=custom?'e.g. white and burgundy, fresh berries, “Happy 30th, Aya”':'Happy birthday, with love…';setQty(c);$('#message').value='';$('#allergy').value='';
+  const custom=c.cat==='custom';$('#variantRow').hidden=!c.variants;if(c.variants){$('#variant').innerHTML='<option value="" disabled selected>Choose a style…</option>'+c.variants.map(v=>`<option>${v}</option>`).join('');}$('#variantNote').textContent='';setSizes(custom?'custom':'standard');$('#messageLabel').textContent=custom?'Design wishes (colours, decor, text on the cake)':'Message on the cake (optional)';$('#message').maxLength=custom?240:60;$('#message').placeholder=custom?'e.g. white and burgundy, fresh berries, “Happy 30th, Aya”':'Happy birthday, with love…';setQty(c);$('#message').value='';$('#allergy').value='';
   const d=$('#orderDate');d.min=minOrderDate();if(!d.value||d.value<d.min)d.value='';$('#dateNote').textContent='';
   showAllergens();$('#productDialog').showModal();
 }
-function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:qtyText(c),filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',custom:c.cat==='custom',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
-function itemText(x){return [x.name,x.size,x.filling&&('filling: '+x.filling),x.message&&((x.custom?'design: ':'message: ')+'“'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
-function needFilling(){const c=cakes[chosen];if(c.type==='cake'&&!fillingOf(c)){$('#fillingNote').textContent='Please choose a filling.';$('#filling').focus();return false;}return true;}
+function currentItem(){const c=cakes[chosen],whole=c.type==='cake'||c.type==='cheesecake';return {name:c.name,size:whole?$('#size').value:qtyText(c),filling:c.type==='cake'?fillingOf(c):'',message:whole?$('#message').value.trim():'',custom:c.cat==='custom',variant:c.variants?$('#variant').value:'',allergy:$('#allergy').value.trim(),date:$('#orderDate').value};}
+function itemText(x){return [x.name,x.variant,x.size,x.filling&&('filling: '+x.filling),x.message&&((x.custom?'design: ':'message: ')+'“'+x.message+'”'),x.allergy&&('allergies: '+x.allergy),x.date&&('delivery: '+prettyDate(x.date))].filter(Boolean).join(' · ');}
+function needFilling(){const c=cakes[chosen];if(c.variants&&!$('#variant').value){$('#variantNote').textContent='Please choose a style.';$('#variant').focus();return false;}if(c.type==='cake'&&!fillingOf(c)){$('#fillingNote').textContent='Please choose a filling.';$('#filling').focus();return false;}return true;}
 function needDate(){const d=$('#orderDate');if(!d.value||d.value<d.min){$('#dateNote').textContent='Please choose a date at least '+LEAD_DAYS+' days from today.';d.focus();return false;}return true;}
 render();
 const customCakes=[
